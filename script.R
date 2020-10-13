@@ -96,9 +96,9 @@ testthat::expect_equal(relative_gi, 0.526013, tol = 0.000001)
 # (instead of 100 of glucose)
 gi_control <- 75
 
-# To calculate the GI of JJ we need to increase the relative GI
-gi <- relative_gi / (gi_control / 100.0)
-testthat::expect_equal(gi, 0.7013507, tol = 0.000001)
+# To calculate the GI of JJ we need to decrease the relative GI
+gi <- relative_gi * (gi_control / 100.0)
+testthat::expect_equal(gi, 0.3945098, tol = 0.000001)
 
 # A GI of 70% is a high GI [2]
 
