@@ -81,10 +81,28 @@ ggplot(
   ggplot2::geom_hline(yintercept = 0.70) +
   ggsave("gi_in_time.png", width = 7, height = 49)
 
-avg_auc_control <- mean(t[t$t == 120 & t$treatment == "control", ]$value)
-avg_auc_jj <- mean(t[t$t == 120 & t$treatment == "jj", ]$value)
-gi <- avg_auc_jj / avg_auc_control
-testthat::expect_equal(gi, 0.5689655, tol = 0.000001)
 # From https://en.wikipedia.org/wiki/Glycemic_index#Grouping
-# that means JJ has a medium glycemic index
+# that means JJ has a low glycemic index
+sum_auc_control <- sum(t[t$treatment == "control", ]$value)
+sum_auc_jj <- sum(t[t$treatment == "jj", ]$value)
 
+# GI assuming control is glucose (with a GI of 100)
+relative_gi <- sum_auc_jj / sum_auc_control
+
+# Compared to white bread, the relative GI is 53%
+testthat::expect_equal(relative_gi, 0.526013, tol = 0.000001)
+
+# However, we know that white bread has a glycemic index of around 75
+# (instead of 100 of glucose)
+gi_control <- 75
+
+# To calculate the GI of JJ we need to increase the relative GI
+gi <- relative_gi / (gi_control / 100.0)
+testthat::expect_equal(gi, 0.7013507, tol = 0.000001)
+
+# A GI of 70% is a high GI [2]
+
+## References
+#
+# * [2] Atkinson, Fiona S., Kaye Foster-Powell, and Jennie C. Brand-Miller. "International tables of glycemic index and glycemic load values: 2008." Diabetes care 31.12 (2008): 2281-2283.
+# * [3] https://en.wikipedia.org/wiki/Glycemic_index#Grouping

@@ -1,6 +1,7 @@
 # jimmy_joy_research
 
-My notes on the Jimmy Joy research on Glycemic Index at https://nl.jimmyjoy.com/pages/heeft-plenny-shake-een-lage-glycemische-index
+My notes on the Jimmy Joy research on Glycemic Index 
+at https://nl.jimmyjoy.com/pages/heeft-plenny-shake-een-lage-glycemische-index
 
 ## Abstract
 
@@ -14,6 +15,20 @@ the outlier criterion and the experimental protocol.
 
 Up until more information is shared, one can best assume that
 Jimmy Joy has a medium (not low) glycemic index.
+
+## Introduction
+
+"Results are given as means ± SEM.
+The area under the 2-h glucose curve
+was expressed as a percentage
+of the appropriate mean GTT value.
+This value was defined as the "glycemic index" [1]
+
+## Method
+
+ * Sum the glucose values
+ * Average
+ * Calculate the GI
 
 ## Conclusion
 
@@ -72,3 +87,8 @@ Ik zou graag de resultaten van dit onderzoek willen reproduceren (een belangrijk
 
 [...]
 ```
+
+## References
+
+ * [1]  Jenkins DJ, Wolever TM, Taylor RH, Barker H, Fielden H, Baldwin JM, et al. Glycemic index of foods: a physiological basis for carbohydrate exchange. Am J Clin Nutr. 1981 Mar 1;34(3):362–6.
+
