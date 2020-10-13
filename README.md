@@ -28,7 +28,7 @@ This value was defined as the "glycemic index" [1]
 
  * Sum the glucose values
  * Average
- * Calculate the GI
+ * Calculate the GI	
 
 ## Conclusion
 
