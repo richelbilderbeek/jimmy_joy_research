@@ -2,6 +2,28 @@
 
 My notes on the Jimmy Joy research on Glycemic Index at https://nl.jimmyjoy.com/pages/heeft-plenny-shake-een-lage-glycemische-index
 
+## Conclusion
+
+To glycemic index of JJ is proven to be 57%, which is a medium (not a low)
+glycemic index, according to the classification on [Wikipedia](https://en.wikipedia.org/wiki/Glycemic_index#Grouping)
+
+## AUCs in time
+
+![](aucs_in_time.png)
+
+## AUCs in time per person
+
+![](aucs_in_time_pp.png)
+
+## Glycemic indices through time
+
+Although by definition, only the value at 120 minute is important...
+
+![](gi_in_time.png)
+
+
+
+
 ## Email
 
 ### 2020-10-12
