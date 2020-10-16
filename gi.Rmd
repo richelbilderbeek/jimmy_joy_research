@@ -1,0 +1,122 @@
+---
+title: "Glycimic Index"
+author: "Richel Bilderbeek"
+date: "10/16/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading libraries
+
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+## Loading data
+
+Control, with white bread, which has a known glycemic index of 75%:
+
+```{r}
+t_control <- read.csv("control.csv")
+names(t_control) <- c("t", names(t_control)[-1])
+t_control$Gemiddeld <- NULL
+knitr::kable(t_control)
+```
+
+Treatment, with Jimmy Joy's Plenny Shake, of which the glycemic
+index needs to be determined:
+
+```{r}
+t_jj <- read.csv("jj.csv")
+names(t_jj) <- c("t", names(t_jj)[-1])
+t_jj$Gemiddeld <- NULL
+knitr::kable(t_jj)
+```
+
+## Convert data to long form
+
+```{r}
+t_control_long <- tidyr::pivot_longer(
+  t_control,
+  cols = starts_with("X"),
+  names_to = "person_id"
+)
+t_control_long$treatment <- "control"
+
+t_jj_long <- tidyr::pivot_longer(
+  t_jj,
+  cols = starts_with("X"),
+  names_to = "person_id"
+)
+t_jj_long$treatment <- "jj"
+t <- rbind(t_control_long, t_jj_long)
+knitr::kable(head(t))
+```
+
+## AUC per person in time
+
+```{r}
+t$person_id <- as.factor(t$person_id)
+ggplot(
+  t,
+  aes(x = t, y = value, color = treatment)
+) + geom_point() + geom_smooth() +
+  scale_y_continuous("AUC of blood glucose concentration") +
+  scale_x_continuous("time (minutes)") +
+  ggtitle("AUCs in time") +
+  facet_grid(person_id ~ .) +
+  ggsave("aucs_in_time_pp.png", width = 7, height = 49)
+```
+
+## Average AUC in time
+
+```{r}
+ggplot(
+  t,
+  aes(x = t, y = value, color = treatment)
+) + geom_point() + geom_smooth() +
+  scale_y_continuous("AUC of blood glucose concentration") +
+  scale_x_continuous("time (minutes)") +
+  ggtitle("AUCs in time") +
+  ggsave("aucs_in_time.png", width = 7, height = 7)
+```
+
+## Calculate the glycemic index
+
+### Calculate the average concentrations (again)
+
+```{r}
+t_summary <- t %>% dplyr::group_by(t, treatment) %>% dplyr::summarise(mean = mean(value), .groups = "drop")
+knitr::kable(t_summary)
+```
+
+### Approximate the area in the two-hour curve
+
+Simply sum the values
+
+```{r}
+t_gi <- t_summary %>% dplyr::group_by(treatment) %>% dplyr::summarise(sum = sum(mean), .groups = "drop")
+knitr::kable(head(t_gi))
+```
+### Correct values
+
+We know the control (white bread) has a glycemic index of 75%.
+
+```{r}
+control_row <- which(t_gi$treatment == "control")
+control_sum <- t_gi$sum[control_row]
+conversion <- 75 / control_sum
+testthat::expect_equal(control_sum * conversion, 75)
+jj_row <- which(t_gi$treatment == "jj")
+jj_sum <- t_gi$sum[jj_row]
+gi <- jj_sum * conversion
+cat(paste("The glycemic index of Jimmy Joy's Plenny shake is", gi))
+```
+
+
+The glycemic index of Jimmy Joy's Plenny shake is approximately 40%,
+which is classified as a low glycemic index.
